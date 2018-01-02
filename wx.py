@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 @app.route("/wechat",methods = ["GET","POST"])
 def wechat_auth():
+    print("I've got something!")
     if request.method == 'GET':
         if len(request.args) > 3:
             token = 'lizhiwodage'
