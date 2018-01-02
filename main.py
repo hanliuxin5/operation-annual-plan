@@ -1,3 +1,4 @@
 from wx import app
-app.run(port = 10087,  
+app.run(host = '172.31.30.163',
+        port = 10087,  
         debug = True )
