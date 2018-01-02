@@ -1,14 +1,15 @@
-#coding:utf-8
-from flask import Flask,render_template,request,make_response
+# coding:utf-8
+from flask import Flask, request, make_response
 import time
 import hashlib
 import xml.etree.ElementTree as ET
 
 app = Flask(__name__)
 
-@app.route("/wechat",methods = ["GET","POST"])
+
+@app.route("/wechat", methods=["GET", "POST"])
 def wechat_auth():
-    print("I've got something!")
+    print(request)
     if request.method == 'GET':
         if len(request.args) > 3:
             token = 'lizhiwodage'
