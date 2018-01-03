@@ -3,6 +3,10 @@ from flask import Flask, request, make_response
 import time
 import hashlib
 import xml.etree.ElementTree as ET
+from wechatpy.utils import check_signature
+from wechatpy.exceptions import InvalidSignatureException
+from wechatpy.replies import TextReply
+from wechatpy import parse_message
 
 app = Flask(__name__)
 
@@ -18,26 +22,20 @@ def wechat_auth():
             timestamp = query['timestamp']
             nonce = query['nonce']
             echostr = query['echostr']
-            s = [timestamp, nonce, token]
-            s.sort()
-            s = ''.join(s)
-            sha1str = hashlib.sha1(s.encode('utf-8')).hexdigest()
-            if sha1str == signature:
-                return make_response(echostr)
-            else:
+            try:
+                check_signature(token, signature, timestamp, nonce)
+                make_response(echostr)
+            except InvalidSignatureException:
+                print("认证失败")
                 return make_response("认证失败")
         else:
+            print("认证失败")
             return make_response("认证失败")
     else:
         rec = request.stream.read()
-        xml_rec = ET.fromstring(rec)
-        tou = xml_rec.find('ToUserName').text
-        fromu = xml_rec.find('FromUserName').text
-        try:
-            content = xml_rec.find('Content').text
-        except AttributeError:
-            print('this is not a message!')
-        xml_rep = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content><FuncFlag>0</FuncFlag></xml>"
-        response = make_response(xml_rep % (fromu, tou, str(int(time.time())), "hello"))
+        msg = parse_message(rec)
+        reply = TextReply(content='text reply', message=msg)
+        xml = reply.render()
+        response = make_response(xml)
         response.content_type = 'application/xml'
         return response
