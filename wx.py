@@ -29,3 +29,4 @@ def wechat_auth():
                 return make_response("认证失败")
         else:
             return make_response("认证失败")
+    return make_response("认证失败")
