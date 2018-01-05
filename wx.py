@@ -26,11 +26,11 @@ def wechat_auth():
                 check_signature(token, signature, timestamp, nonce)
                 make_response(echostr)
             except InvalidSignatureException:
-                print("认证失败")
-                return make_response("认证失败")
+                print("sinature认证失败")
+                return make_response("sinature认证失败")
         else:
-            print("认证失败")
-            return make_response("认证失败")
+            print("args认证失败")
+            return make_response("args认证失败")
     else:
         rec = request.stream.read()
         msg = parse_message(rec)
