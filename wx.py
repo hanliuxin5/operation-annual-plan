@@ -35,10 +35,11 @@ def wechat_auth():
         #     msg.id, msg.source, msg.target, msg.type, msg.event, msg.key))
         content = "empty"
         if msg.type == "event":
-            if msg.event == "click":
+            if msg.event == "pic_photo_or_album":
                 if msg.key == "sign":
                     content = "sign"
-                    process_sign()
+                    process_sign(msg.count, msg.pictures)
+            if msg.event == "click":
                 if msg.key == "items":
                     content = "items"
                     process_items()
@@ -49,9 +50,12 @@ def wechat_auth():
         return response
 
 
-def process_sign():
-    print("process_sign")
+def process_sign(count=0, pics={}):
+    print("process_sign>>>start")
+    print("count=%s" % count)
+    print(pics)
+    print("process_sign>>>end")
 
 
 def process_items():
-    print("process_itrmd")
+    print("process_items")
