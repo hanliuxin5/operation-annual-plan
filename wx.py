@@ -31,10 +31,16 @@ def wechat_auth():
     else:
         rec = request.stream.read()
         msg = parse_message(rec)
-        print("id=%s,source=%s,target=%s,type=%s,event=%s,key=%s" % (
-            msg.id, msg.source, msg.target, msg.type, msg.event, msg.key))
-
-        reply = TextReply(content='text reply111', message=msg)
+        # print("id=%s,source=%s,target=%s,type=%s,event=%s,key=%s" % (
+        #     msg.id, msg.source, msg.target, msg.type, msg.event, msg.key))
+        content = "empty"
+        if msg.type == "event":
+            if msg.event == "click":
+                if msg.key == "sign":
+                    content = "sign"
+                if msg.key == "items":
+                    content = "items"
+        reply = TextReply(content=content, message=msg)
         xml = reply.render()
         response = make_response(xml)
         response.content_type = 'application/xml'
