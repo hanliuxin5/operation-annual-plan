@@ -1,8 +1,5 @@
 # coding:utf-8
 from flask import Flask, request, make_response
-import time
-import hashlib
-import xml.etree.ElementTree as ET
 from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.replies import TextReply
@@ -34,6 +31,7 @@ def wechat_auth():
     else:
         rec = request.stream.read()
         msg = parse_message(rec)
+        print("id=%s,source=%s,target=%s,type=%s,event=%s" % (msg.id, msg.source, msg.target, msg.type, msg.event))
         reply = TextReply(content='text reply111', message=msg)
         xml = reply.render()
         response = make_response(xml)
