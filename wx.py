@@ -33,6 +33,7 @@ def wechat_auth():
         msg = parse_message(rec)
         print("id=%s,source=%s,target=%s,type=%s" % (msg.id, msg.source, msg.target, msg.type))
         content = "empty"
+
         if msg.type == "event":
             if msg.event == "pic_photo_or_album":
                 if msg.key == "sign":
@@ -42,6 +43,10 @@ def wechat_auth():
                 if msg.key == "items":
                     content = "items"
                     process_items()
+
+        if msg.type == "image":
+            get_user_uploadpics(msg.source, msg.image)
+
         reply = TextReply(content=content, message=msg)
         xml = reply.render()
         response = make_response(xml)
@@ -58,3 +63,9 @@ def process_sign(count=0, pics={}):
 
 def process_items():
     print("process_items")
+
+
+def get_user_uploadpics(userid="", url=""):
+    print("get_user_uploadpics>>>start")
+    print("userid=%s,pics=%s" % (userid, url))
+    print("get_user_uploadpics>>>end")
