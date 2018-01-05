@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route("/wechat", methods=["GET", "POST"])
 def wechat_auth():
-    print(request.args)
+    # print(request.args)
     if request.method == 'GET':
         if len(request.args) > 3:
             token = 'lizhiwodage'
@@ -31,8 +31,7 @@ def wechat_auth():
     else:
         rec = request.stream.read()
         msg = parse_message(rec)
-        # print("id=%s,source=%s,target=%s,type=%s,event=%s,key=%s" % (
-        #     msg.id, msg.source, msg.target, msg.type, msg.event, msg.key))
+        print("id=%s,source=%s,target=%s,type=%s" % (msg.id, msg.source, msg.target, msg.type))
         content = "empty"
         if msg.type == "event":
             if msg.event == "pic_photo_or_album":
