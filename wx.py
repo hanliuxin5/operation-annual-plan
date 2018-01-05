@@ -31,7 +31,9 @@ def wechat_auth():
     else:
         rec = request.stream.read()
         msg = parse_message(rec)
-        print("id=%s,source=%s,target=%s,type=%s,event=%s" % (msg.id, msg.source, msg.target, msg.type, msg.event))
+        print("id=%s,source=%s,target=%s,type=%s,event=%s,key=%s" % (
+            msg.id, msg.source, msg.target, msg.type, msg.event, msg.key))
+
         reply = TextReply(content='text reply111', message=msg)
         xml = reply.render()
         response = make_response(xml)
