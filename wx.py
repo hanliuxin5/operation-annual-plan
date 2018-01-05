@@ -38,10 +38,20 @@ def wechat_auth():
             if msg.event == "click":
                 if msg.key == "sign":
                     content = "sign"
+                    process_sign()
                 if msg.key == "items":
                     content = "items"
+                    process_items()
         reply = TextReply(content=content, message=msg)
         xml = reply.render()
         response = make_response(xml)
         response.content_type = 'application/xml'
         return response
+
+
+def process_sign():
+    print("process_sign")
+
+
+def process_items():
+    print("process_itrmd")
